@@ -20,7 +20,7 @@
     @allowed_ip remote_ip 180.150.98.70
     
     handle @allowed_ip {
-        caldera.railway.internal:8888
+        reverse_proxy caldera.railway.internal:8888
     }
 
     # 3. Block everyone else
