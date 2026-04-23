@@ -2,14 +2,25 @@
 # opens a port and serves a static site from the www folder.
 # Edit this file according to your needs.
 
-:{$80} {
-    # Manual health check to satisfy Railway's deployment
+{
+    # Required for IP matching to work later
+    servers {
+        trusted_proxies static private_ranges
+    }
+}
+
+:{$PORT} {
+    # 1. Immediate response for Railway's Health Check
+    # This fixes the "Service Unavailable" loop
     handle / {
         respond "OK" 200
     }
 
-    # Proxy to your backend
+    # 2. Proxy everything else to your Caldera service
     handle {
-        reverse_proxy caldera.railway.internal:8888
+        reverse_proxy caldera.railway.internal:8888 {
+            # Don't give up if Caldera is slow to start
+            max_fails 0
+        }
     }
 }
