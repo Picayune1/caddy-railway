@@ -8,23 +8,7 @@
     }
 }
 
-# Use :{$PORT} so Caddy listens on the port Railway expects
 :{$80} {
-    # 1. ALWAYS allow Railway's health check path
-    # Railway's health check defaults to "/"
-    handle / {
-        respond "OK" 200
-    }
-
-    # 2. Restrict everything else to your IP
-    @allowed_ip remote_ip 180.150.98.70
-    
-    handle @allowed_ip {
-        reverse_proxy caldera.railway.internal:8888
-    }
-
-    # 3. Block everyone else
-    handle {
-        abort
-    }
+    # Simple proxy to your backend
+    reverse_proxy caldera.railway.internal:8888
 }
