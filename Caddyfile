@@ -18,7 +18,7 @@
 
     # 2. Proxy everything else to your Caldera service
     handle {
-        reverse_proxy caldera.railway.internal:8888 {
+        reverse_proxy http://caldera.railway.internal:8888 {
             # Don't give up if Caldera is slow to start
             max_fails 0
         }
